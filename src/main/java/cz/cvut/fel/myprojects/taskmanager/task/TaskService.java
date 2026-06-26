@@ -11,11 +11,13 @@ import cz.cvut.fel.myprojects.taskmanager.user.User;
 import cz.cvut.fel.myprojects.taskmanager.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -41,6 +43,7 @@ public class TaskService {
         return TaskResponse.from(task);
     }
 
+    @Transactional
     public TaskResponse createTask(String email, CreateTaskRequest request) {
         User currentUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -61,6 +64,7 @@ public class TaskService {
         return TaskResponse.from(savedTask);
     }
 
+    @Transactional
     public TaskResponse updateTask(Long taskId, String email, UpdateTaskRequest request) {
         Task task = getTaskForOwner(taskId, email);
 
@@ -73,6 +77,7 @@ public class TaskService {
         return TaskResponse.from(savedTask);
     }
 
+    @Transactional
     public TaskResponse updateTaskStatus(Long taskId, String email, UpdateTaskStatusRequest request) {
         Task task = getTaskForOwner(taskId, email);
 
@@ -82,6 +87,7 @@ public class TaskService {
         return TaskResponse.from(savedTask);
     }
 
+    @Transactional
     public void deleteTask(Long taskId, String email) {
         Task task = getTaskForOwner(taskId, email);
         taskRepository.delete(task);

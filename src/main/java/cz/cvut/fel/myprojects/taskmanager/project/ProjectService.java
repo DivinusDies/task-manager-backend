@@ -34,7 +34,7 @@ public class ProjectService {
         return ProjectResponse.from(project);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public ProjectResponse createProject(String email, CreateProjectRequest request) {
         User owner = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found"));

@@ -8,11 +8,13 @@ import cz.cvut.fel.myprojects.taskmanager.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional (readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -23,6 +25,7 @@ public class UserService {
         return UserResponse.from(user);
     }
 
+    @Transactional
     public UserResponse updateCurrentUser(String email, UpdateProfileRequest request) {
         User user = getUserByEmail(email);
 
@@ -33,6 +36,7 @@ public class UserService {
         return UserResponse.from(savedUser);
     }
 
+    @Transactional
     public void changePassword(String email, ChangePasswordRequest request) {
         User user = getUserByEmail(email);
 
@@ -56,6 +60,7 @@ public class UserService {
         return UserResponse.from(user);
     }
 
+    @Transactional
     public UserResponse updateUserRole(Long id, UpdateUserRoleRequest request) {
         User user = getUserEntityById(id);
 
@@ -65,6 +70,7 @@ public class UserService {
         return UserResponse.from(savedUser);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = getUserEntityById(id);
         userRepository.delete(user);
