@@ -1,5 +1,6 @@
 package cz.cvut.fel.myprojects.taskmanager.task.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,7 +17,8 @@ public record UpdateTaskRequest(
         @Size(max = 2000, message = "Description must be less than 2000 characters")
         String description,
 
-        @NotNull TaskStatus status,
+        @NotNull
+        TaskStatus status,
 
         Long projectId,
 
